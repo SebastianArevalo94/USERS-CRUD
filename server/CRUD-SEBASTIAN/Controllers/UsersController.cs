@@ -20,7 +20,6 @@ namespace CRUD_SEBASTIAN.Controllers
         }
 
         //GET ALL USERS:
-
         [HttpGet]
         [Route("List")]
         public ActionResult GetAllUsers()
@@ -38,7 +37,6 @@ namespace CRUD_SEBASTIAN.Controllers
         }
 
         //GET ONE USER BY ID:
-
         [HttpGet]
         [Route("GetOne/{idUser:int}")]
 
@@ -60,7 +58,6 @@ namespace CRUD_SEBASTIAN.Controllers
         }
 
         //POST - SAVE USER
-
         [HttpPost]
         [Route("SaveUser")]
 

@@ -12,6 +12,16 @@ export const GetAllUsers = async () => {
   }
 };
 
+export const SearchUser = async(searchStr:String) => {
+  try {
+    const resp = await fetch(`${url}/SearchUser/${searchStr}`);
+    const json = await resp.json();
+    return json;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const CreateUser = async(user:User) => {
   try {
     const resp = await fetch(`${url}/SaveUser`,{

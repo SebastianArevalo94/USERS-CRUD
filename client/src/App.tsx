@@ -1,12 +1,11 @@
 import { UserList } from "./components/view/UserList";
-import { Typography, Box } from "@mui/material";
+import { Box } from "@mui/material";
+import {NavBar} from "./components/view/NavBar";
 
 function App() {
   return (
     <Box sx={{ display: "flex", flexDirection: "column", gap: 3 }}>
-      <Typography variant="h4" textAlign="center">
-        USERS INTERFACE
-      </Typography>
+      <NavBar/>
       <UserList />
     </Box>
   );

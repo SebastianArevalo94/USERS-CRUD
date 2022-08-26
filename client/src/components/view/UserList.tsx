@@ -4,10 +4,13 @@ import {
   DeleteUser,
   EditUser,
   GetAllUsers,
+  SearchUser,
 } from "../services/users.controllers";
 import {
   Box,
   Button,
+  TextField,
+  Typography,
   Table,
   TableBody,
   TableCell,
@@ -26,6 +29,8 @@ import { User } from "../interfaces/user.interfaces";
 
 export const UserList = () => {
   const [users, setUsers] = useState<User[]>([]);
+  const [searchStr, setSearchStr] = useState<String>("");
+  const [isSearching, setIsSearching] = useState<Boolean>(false);
   const [user, setUser] = useState<User>({
     userId: 0,
     nombre: "",
@@ -35,11 +40,34 @@ export const UserList = () => {
   const [open, setOpen] = useState(false);
   const [confirmOpen, setConfirmOpen] = useState(false);
 
+  const FetchData = () => {
+    GetAllUsers().then((json) => {
+      setUsers(json.response);
+    });
+  };
+
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setUser({
       ...user,
       [e.target.name]: e.target.value,
     });
+  };
+
+  const handleSearch = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchStr(e.target.value);
+    if (searchStr !== "") {
+      setIsSearching(true);
+      SearchUser(searchStr)
+        .then((json) => {
+          setUsers(json.response);
+        })
+        .catch((err) => console.log(err));
+    }
+  };
+
+  const cleanSearch = () => {
+    FetchData();
+    setSearchStr("");
   };
 
   const handleCreateUser = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -75,9 +103,9 @@ export const UserList = () => {
   };
 
   useEffect(() => {
-    GetAllUsers().then((json) => {
-      setUsers(json.response);
-    });
+    if (!isSearching) {
+      FetchData();
+    }
   }, [users]);
 
   const handleCloseAddConfirm = () => {
@@ -135,6 +163,38 @@ export const UserList = () => {
       >
         Add New
       </Button>
+      <Box
+        sx={{
+          display: "flex",
+          m: "auto",
+          alignItems: "center",
+          gap: 3,
+          flexDirection: "column",
+        }}
+      >
+        <Typography variant="h5" textAlign="center">
+          Search User
+        </Typography>
+        <Box sx={{ display: "flex", gap: 3 }}>
+          <TextField
+            sx={{ m: "auto" }}
+            id="outlined-basic"
+            label="Type the name"
+            variant="outlined"
+            value={searchStr}
+            onChange={handleSearch}
+          />
+          <Button
+          sx={{height:35, mt:1}}
+            variant="contained"
+            color="error"
+            onClick={cleanSearch}
+            endIcon={<DeleteIcon />}
+          >
+            Delete Search
+          </Button>
+        </Box>
+      </Box>
       <TableContainer component={Paper} sx={{ width: 450, m: "auto" }}>
         <Table sx={{ minWidth: 120 }} aria-label="simple table">
           <TableHead>
